@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIC Digital Data Sheet - SUMAN PRADHAN</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .form-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 900px; margin: auto; }
+        h1 { text-align: center; color: #003366; text-transform: uppercase; border-bottom: 3px solid #ffcc00; padding-bottom: 10px; }
+        .section { background: #003366; color: white; padding: 8px 15px; margin: 20px 0 15px 0; font-weight: bold; border-radius: 4px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .field { display: flex; flex-direction: column; }
+        label { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #555; }
+        input, select, textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        table, th, td { border: 1px solid #ddd; }
+        th { background: #f8f9fa; padding: 10px; }
+        td { padding: 5px; }
+        .readonly { background: #e9ecef; font-weight: bold; }
+        .btn-submit { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 30px; transition: 0.3s; }
+        .btn-submit:hover { background: #218838; }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h1>LIC DATA SHEET</h1>
+    
+    <div class="grid">
+        <div class="field">
+            <label>Agent's Name</label>
+            <input type="text" id="agentName" value="SUMAN PRADHAN" class="readonly" readonly>
+        </div>
+        <div class="field">
+            <label>Code No.</label>
+            <input type="text" id="agentCode" value="0263459B" class="readonly" readonly>
+        </div>
+    </div>
+
+    <div class="section">PERSONAL INFORMATION</div>
+    <div class="grid">
+        <div class="field"><label>Full Name of L.A.</label><input type="text" id="laName"></div>
+        <div class="field"><label>Date of Birth</label><input type="date" id="dob"></div>
+        <div class="field"><label>Sex</label><select id="sex"><option>Male</option><option>Female</option><option>Other</option></select></div>
+        <div class="field"><label>Age</label><input type="number" id="age"></div>
+        <div class="field" style="grid-column: span 2;"><label>Present Address</label><input type="text" id="presAddr"></div>
+        <div class="field" style="grid-column: span 2;"><label>Permanent Address</label><input type="text" id="permAddr"></div>
+        <div class="field"><label>Qualification</label><input type="text" id="qual"></div>
+        <div class="field"><label>Place of Birth</label><input type="text" id="pob"></div>
+    </div>
+
+    <div class="section">FAMILY DETAILS</div>
+    <div class="grid">
+        <div class="field"><label>Father's Name</label><input type="text" id="fName"></div>
+        <div class="field"><label>Mother's Name</label><input type="text" id="mName"></div>
+        <div class="field"><label>Nominee's Name</label><input type="text" id="nominee"></div>
+        <div class="field"><label>Relationship with L.A.</label><input type="text" id="rel"></div>
+    </div>
+
+    <div class="section">OCCUPATION & INCOME</div>
+    <div class="grid">
+        <div class="field"><label>Present Occupation</label><input type="text" id="occ"></div>
+        <div class="field"><label>Nature of Duty</label><input type="text" id="duty"></div>
+        <div class="field"><label>Annual Income</label><input type="number" id="income"></div>
+        <div class="field"><label>Length of Service</label><input type="text" id="service"></div>
+    </div>
+
+    <div class="section">PHYSICAL MEASUREMENTS</div>
+    <div class="grid">
+        <div class="field"><label>Height (cm)</label><input type="text" id="height"></div>
+        <div class="field"><label>Weight (kg)</label><input type="text" id="weight"></div>
+        <div class="field"><label>Chest</label><input type="text" id="chest"></div>
+        <div class="field"><label>Abdomen</label><input type="text" id="abdomen"></div>
+        <div class="field" style="grid-column: span 2;"><label>Identification Marks</label><input type="text" id="idMarks"></div>
+    </div>
+
+    <div class="section">FAMILY HISTORY (Table)</div>
+    <table>
+        <tr><th>Relation</th><th>Age (If Living)</th><th>Age at Death</th><th>Cause of Death</th></tr>
+        <tr><td>Father</td><td><input type="text" id="fLiv"></td><td><input type="text" id="fDea"></td><td><input type="text" id="fCau"></td></tr>
+        <tr><td>Mother</td><td><input type="text" id="mLiv"></td><td><input type="text" id="mDea"></td><td><input type="text" id="mCau"></td></tr>
+    </table>
+
+    <div class="section">CONTACT & BANK</div>
+    <div class="grid">
+        <div class="field"><label>Phone No.</label><input type="text" id="phone"></div>
+        <div class="field"><label>Bank A/c No.</label><input type="text" id="bank"></div>
+        <div class="field" style="grid-column: span 2;"><label>Email Address</label><input type="email" id="email"></div>
+    </div>
+
+    <button class="btn-submit" onclick="generateFullPDF()">DOWNLOAD COMPLETED PDF</button>
+</div>
+
+<script>
+    function generateFullPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        doc.setFontSize(16);
+        doc.text("LIC DATA SHEET - Digital Submission", 105, 15, { align: "center" });
+        
+        doc.setFontSize(10);
+        doc.text(`Agent: ${document.getElementById('agentName').value}`, 20, 25);
+        doc.text(`Code: ${document.getElementById('agentCode').value}`, 150, 25);
+        
+        doc.line(20, 28, 190, 28); // Horizontal line
+
+        // Column 1
+        doc.text(`Name: ${document.getElementById('laName').value}`, 20, 40);
+        doc.text(`DOB: ${document.getElementById('dob').value}`, 20, 50);
+        doc.text(`Address: ${document.getElementById('presAddr').value}`, 20, 60);
+        doc.text(`Occupation: ${document.getElementById('occ').value}`, 20, 70);
+        
+        // Column 2
+        doc.text(`Age: ${document.getElementById('age').value}`, 120, 40);
+        doc.text(`Sex: ${document.getElementById('sex').value}`, 120, 50);
+        doc.text(`Income: ${document.getElementById('income').value}`, 120, 70);
+
+        doc.text("--- Family & Measurements ---", 20, 85);
+        doc.text(`Father: ${document.getElementById('fName').value}`, 20, 95);
+        doc.text(`Nominee: ${document.getElementById('nominee').value}`, 120, 95);
+        doc.text(`Height: ${document.getElementById('height').value} cm`, 20, 105);
+        doc.text(`Weight: ${document.getElementById('weight').value} kg`, 70, 105);
+        doc.text(`ID Marks: ${document.getElementById('idMarks').value}`, 20, 115);
+
+        doc.text(`Phone: ${document.getElementById('phone').value}`, 20, 130);
+        doc.text(`Bank A/c: ${document.getElementById('bank').value}`, 120, 130);
+
+        doc.save("LIC_Form_Complete.pdf");
+    }
+</script>
+
+</body>
+</html>
